@@ -19,15 +19,7 @@ app.use('/api', authRoutes);
 
 app.use('/api/staff', staffRoutes);
 
-sequelize.sync({ force: true }).then(() => {
-    console.log('Database synced');
-    Admin.create({
-        username: 'admin',
-        password: 'admin123'
-    }).then(() => {
-        console.log('Default admin created');
-    }).catch(err => console.error('Error creating default admin:', err));
-});
+sequelize.sync();
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

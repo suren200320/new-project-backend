@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const staffController = require('../controllers/staffController');
+const Position = require('../models/position');
+const PositionTranslation = require('../models/positionTranslation');
 
 router.post('/add', async (req, res) => {
     const { firstName, lastName, avatar, positions } = req.body;

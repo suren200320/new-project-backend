@@ -1,0 +1,28 @@
+# Dependency directories
+node_modules/
+npm-debug.log
+
+# Environment variables file
+.env
+
+# Compiled output
+dist/
+
+# Log files
+logs/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore environment configuration files that may contain sensitive information
+config/*.env
+
+# Ignore package-lock.json for npm
+package-lock.json

@@ -1,10 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const sequelize = require('./config/databaseConnections');
+const cors = require('cors');
+
 const authRoutes = require('./routes/authRoutes');
 const staffRoutes = require('./routes/staffRoutes');
-const sequelize = require('./config/databaseConnections');
-const Admin = require('./models/admin');
-const cors = require('cors');
+const footerItemsRouter = require('./routes/footerItems');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,6 +17,7 @@ app.use(cors({
 }));
 
 app.use('/api', authRoutes);
+app.use('/api', footerItemsRouter);
 
 app.use('/api/staff', staffRoutes);
 

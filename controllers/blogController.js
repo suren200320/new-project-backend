@@ -1,4 +1,3 @@
-const { where } = require("sequelize");
 const BlogItem = require("../models/blog");
 const BlogTranslation = require("../models/blogTranslation");
 
@@ -31,26 +30,24 @@ async function removeBlogItem(id) {
   }
 }
 
-async function editBlogItem(id, translations,image) {
+async function editBlogItem(id, translations, image) {
   try {
-    await BlogItem.update(
-      { image},
-      { where: { id } }
-    );
-    
+    await BlogItem.update({ image }, { where: { id } });
+
     await Promise.all(
-        Object.keys(translations).map(async (language) => {
-          await BlogTranslation.update({
+      Object.keys(translations).map(async (language) => {
+        await BlogTranslation.update(
+          {
             language,
             title: translations[language].title,
             description: translations[language].description,
           },
           {
-            where:{blogId:id}
+            where: { blogId: id },
           }
-          );
-        })
-      );
+        );
+      })
+    );
 
     return true;
   } catch (error) {
@@ -67,13 +64,16 @@ async function getAllBlogItem() {
   }
 }
 
-async function getBlogDataByLanguage(language){
-    try {
-        const blogTranslation = await BlogTranslation.findAll({where: language});
-        return blogTranslation;
-    } catch (error){
-        throw new Error("Error getting all")
-    }
+async function getBlogDataByLanguage(language) {
+  console.log(language, "language");
+  try {
+    const blogTranslation = await BlogTranslation.findAll({
+      where: { language },
+    });
+    return blogTranslation;
+  } catch (error) {
+    throw new Error("Error getting all");
+  }
 }
 
 module.exports = {

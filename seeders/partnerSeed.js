@@ -1,7 +1,7 @@
 const sequelize = require("../config/databaseConnections");
-const PortfolioTranslation = require("../models/portfolioTranslation");
-const PortfolioItem = require("../models/portfolio");
-const faker = require("faker");
+const PartnerTranslation = require("../models/partnerTranslation");
+const PartnerItem = require("../models/partner");
+const PartnerImage = require("../models/partnerImage")
 
 async function seed() {
   try {
@@ -9,7 +9,7 @@ async function seed() {
 
    
 
-    const defaultPortfolioItems = [
+    const defaultPartnerItems = [
       {
         title: "Portfolio1",
         description: "Description1",
@@ -18,6 +18,11 @@ async function seed() {
           { title: "Portfolio 1", description: "Description 1", language: "en" },
           { title: "Портфолио 1", description: "Описание 1", language: "ru" },
         ],
+        images: [
+          {image: ""},
+          {image: ""},
+          {image: ""}
+        ]
       },
       {
         title: "Portfolio1",
@@ -27,6 +32,11 @@ async function seed() {
           { title: "Portfolio 2", description: "Description 2", language: "en" },
           { title: "Портфолио 2", description: "Описание 2", language: "ru" },
         ],
+        images: [
+          {image: ""},
+          {image: ""},
+          {image: ""}
+        ]
       },
       {
         title: "Portfolio3",
@@ -36,6 +46,11 @@ async function seed() {
           { title: "Portfolio 3", description: "Description 3", language: "en" },
           { title: "Портфолио 3", description: "Описание 3", language: "ru" },
         ],
+        images: [
+          {image: ""},
+          {image: ""},
+          {image: ""}
+        ]
       },
       {
         title: "Portfolio2",
@@ -45,6 +60,11 @@ async function seed() {
           { title: "Portfolio 4", description: "Description 4", language: "en" },
           { title: "Портфолио 4", description: "Описание 4", language: "ru" },
         ],
+        images: [
+          {image: ""},
+          {image: ""},
+          {image: ""}
+        ]
       },
       {
         title: "Portfolio2",
@@ -54,6 +74,11 @@ async function seed() {
           { title: "Portfolio 4", description: "Description 4", language: "en" },
           { title: "Портфолио 4", description: "Описание 4", language: "ru" },
         ],
+        images: [
+          {image: ""},
+          {image: ""},
+          {image: ""}
+        ]
       },
       {
         title: "Portfolio2",
@@ -63,23 +88,38 @@ async function seed() {
           { title: "Portfolio 4", description: "Description 4", language: "en" },
           { title: "Портфолио 4", description: "Описание 4", language: "ru" },
         ],
+        images: [
+          {image: ""},
+          {image: ""},
+          {image: ""}
+        ]
       }
     ];
 
-    const PortfolioItems = await Promise.all(
-      defaultPortfolioItems.map(async (defaultPortfolioItem) => {
-        const portfolioItem = await PortfolioItem.create({ title: defaultPortfolioItem.title });
+    const PartnerItems = await Promise.all(
+      defaultPartnerItems.map(async (defaultPartnerItem) => {
+        const partnerItem = await PartnerItem.create({ title: defaultPartnerItem.title });
         await Promise.all(
-          defaultPortfolioItem.translations.map(async (translation) => {
-            await PortfolioTranslation.create({
+          defaultPartnerItem.translations.map(async (translation) => {
+            await PartnerTranslation.create({
               title: translation.title,
               description: translation.description,
               language: translation.language,
-              portfolioId: portfolioItem.id,
+              PartnerItemId: partnerItem.id,
             });
           })
         );
-        return PortfolioItem;
+        await Promise.all(
+          defaultPartnerItem.images.map(async (image) => {
+            await PartnerImage.create({
+              image: image.url,
+              PartnerItemId: partnerItem.id,
+    
+            })
+          })
+        )
+        
+        return partnerItem;
       })
     );
 

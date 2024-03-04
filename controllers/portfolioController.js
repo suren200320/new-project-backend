@@ -69,7 +69,7 @@ async function getAllPortfolioItem() {
 
 async function getPortfolioDataByLanguage(language){
     try {
-        const portfolioTranslation = await PortfolioTranslation.findAll({where: language});
+        const portfolioTranslation = await PortfolioTranslation.findAll({where: {language}});
         return portfolioTranslation;
     } catch (error){
         throw new Error("Error getting all")

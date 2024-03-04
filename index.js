@@ -8,6 +8,7 @@ const staffRoutes = require('./routes/staffRoutes');
 const footerItemsRouter = require('./routes/footerItems');
 const blogRoutes = require('./routes/blogRoutes');
 const portfolioRoutes = require('./routes/portfolioRoutes');
+const partnerRoutes = require('./routes/partnerRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -25,6 +26,7 @@ app.use('/api/staff', staffRoutes);
 
 app.use('/api/blog', blogRoutes)
 app.use('/api/portfolio', portfolioRoutes)
+app.use('/api/partner', partnerRoutes)
 
 sequelize.sync();
 

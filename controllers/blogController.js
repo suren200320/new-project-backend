@@ -69,7 +69,7 @@ async function getAllBlogItem() {
 
 async function getBlogDataByLanguage(language){
     try {
-        const blogTranslation = await BlogTranslation.findAll({where: language});
+        const blogTranslation = await BlogTranslation.findAll({where: {language}});
         return blogTranslation;
     } catch (error){
         throw new Error("Error getting all")

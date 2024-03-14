@@ -11,6 +11,9 @@ const PartnerImage = sequelize.define('PartnerImage', {
     image: {
         type: DataTypes.TEXT,
 
+    },
+    isMain: {
+        type: DataTypes.BOOLEAN,
     }
 });
 

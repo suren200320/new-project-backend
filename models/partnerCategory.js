@@ -1,19 +1,24 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/databaseConnections');
 
-const PartnerItem = sequelize.define('PartnerItem', {
+const PartnerCategory = sequelize.define('PartnerCategory', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    mainImage: {
-        type: DataTypes.TEXT,
+    key: {
+        type: DataTypes.STRING,
+
     },
-    categoryKey: {
+    name: {
+        type: DataTypes.STRING,
+
+    },
+    language: {
         type: DataTypes.STRING,
     }
 });
 
 
-module.exports = PartnerItem;
+module.exports = PartnerCategory;

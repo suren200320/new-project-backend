@@ -1,12 +1,14 @@
 const PartnerItem = require("../models/partner");
 const PartnerTranslation = require("../models/partnerTranslation");
 const PartnerImage = require("../models/partnerImage");
+const PartnerSocial = require("../models/partnerSocial");
+const PartnerCategory = require("../models/partnerCategory");
 
-async function addPartnerItem(translations,images) {
+async function addPartnerItem(translations,images,categoryKey,socials) {
   const mainImage = images.find(item=> item.isMain).url
   try {
 
-    const partnerItem = await PartnerItem.create({ mainImage });
+    const partnerItem = await PartnerItem.create({ mainImage ,categoryKey});
     await Promise.all(
       Object.keys(translations).map(async (language) => {
         await PartnerTranslation.create({
@@ -26,6 +28,15 @@ async function addPartnerItem(translations,images) {
         })
       })
     )
+    await Promise.all(
+      socials.map(async (social)=>{
+        await PartnerSocial.create({
+          PartnerItemId: partnerItem.id,
+          name: social.name,
+          url: social.url
+        })
+      })
+    )
     return true;
   } catch (error) {
     throw new Error("Error adding partner item ");
@@ -37,17 +48,19 @@ async function removePartnerItem(id) {
     await PartnerItem.destroy({ where: { id } });
     await PartnerTranslation.destroy({ where: { PartnerItemId: id } });
     await PartnerImage.destroy({ where: {PartnerItemId: id}})
+    await PartnerSocial.destroy({ where: {PartnerItemId: id}})
     return true;
   } catch (error) {
     throw new Error("Error removing partner item");
   }
 }
 
-async function editPartnerItem(id, translations,images) {
+async function editPartnerItem(id, translations,images,categoryKey,socials) {
   const mainImage = images.find(image => image.isMain)
   try {
     await PartnerItem.update(
       { mainImage},
+      {categoryKey},
       { where: { id } }
     );
     
@@ -72,6 +85,16 @@ async function editPartnerItem(id, translations,images) {
           },
           {
             where:{PartnerItemId: id}
+          })
+        })  
+      )
+      await Promise.all(
+        socials.map(async (social) => {
+          await PartnerImage.update({
+            url: social.url
+          },
+          {
+            where:{id: social.id}
           })
         })  
       )
@@ -109,11 +132,47 @@ async function getPartnerImages(id){
   }
 }
 
+async function addPartnerCategory(translations,key){
+  try{
+    await Promise.all(
+      Object.keys(translations).map(async (language) => {
+        await PartnerCategory.create({
+          language,
+          name: translations[language].name,
+          key
+        });
+      })
+    );
+  } catch(error){
+    throw new Error("Error adding category")
+  }
+}
+
+async function removePartnerCategory(id){
+  try{
+    await PartnerCategory.destroy({where :{id}})
+  } catch(error){
+    throw new Error("Error removing category")
+  }
+}
+
+async function getPartnerCategories(){
+  try{
+    const categories = await PartnerCategory.findAll();
+    return categories;
+  } catch(error){
+    throw new Error("Error getting categories")
+  }
+}
+
 module.exports = {
   addPartnerItem,
   removePartnerItem,
   editPartnerItem,
   getAllPartnerItem,
   getPartnerDataByLanguage,
-  getPartnerImages
+  getPartnerImages,
+  addPartnerCategory,
+  removePartnerCategory,
+  getPartnerCategories
 };

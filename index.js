@@ -9,6 +9,7 @@ const footerItemsRouter = require('./routes/footerItems');
 const blogRoutes = require('./routes/blogRoutes');
 const portfolioRoutes = require('./routes/portfolioRoutes');
 const partnerRoutes = require('./routes/partnerRoutes');
+const vacancyRoutes = require('./routes/vacancyRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -27,6 +28,7 @@ app.use('/api/staff', staffRoutes);
 app.use('/api/blog', blogRoutes)
 app.use('/api/portfolio', portfolioRoutes)
 app.use('/api/partner', partnerRoutes)
+app.use('/api/vacancy', vacancyRoutes)
 
 sequelize.sync();
 
